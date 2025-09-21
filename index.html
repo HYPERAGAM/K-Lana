@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>K-lana AI - Smart Homework & Doubt Solver</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-brain"></i>
+                <span>K-lana AI</span>
+            </div>
+            <div class="nav-menu" id="nav-menu">
+                <a href="#home" class="nav-link active">Home</a>
+                <a href="#doubts" class="nav-link">Doubts</a>
+                <a href="#homework" class="nav-link">Homework</a>
+                <a href="#rewards" class="nav-link">Rewards</a>
+                <a href="#profile" class="nav-link">Profile</a>
+            </div>
+            <div class="nav-actions">
+                <button class="theme-toggle" id="theme-toggle">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <div class="xp-display">
+                    <i class="fas fa-star"></i>
+                    <span id="current-xp">0</span> XP
+                </div>
+                <button class="nav-toggle" id="nav-toggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Hero Section -->
+        <section id="home" class="hero-section">
+            <div class="hero-container">
+                <div class="hero-content">
+                    <h1 class="hero-title">
+                        Smart Learning with
+                        <span class="gradient-text">K-lana AI</span>
+                    </h1>
+                    <p class="hero-description">
+                        Solve doubts instantly, complete homework efficiently, and unlock amazing rewards. 
+                        Your AI-powered learning companion for Class 10 and beyond.
+                    </p>
+                    <div class="hero-stats">
+                        <div class="stat-item">
+                            <div class="stat-number" id="doubts-solved">0</div>
+                            <div class="stat-label">Doubts Solved</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number" id="homework-completed">0</div>
+                            <div class="stat-label">Homework Done</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number" id="total-xp">0</div>
+                            <div class="stat-label">Total XP</div>
+                        </div>
+                    </div>
+                    <div class="hero-buttons">
+                        <button class="btn btn-primary" onclick="scrollToSection('doubts')">
+                            <i class="fas fa-question-circle"></i>
+                            Solve Doubts
+                        </button>
+                        <button class="btn btn-secondary" onclick="scrollToSection('homework')">
+                            <i class="fas fa-book"></i>
+                            Do Homework
+                        </button>
+                    </div>
+                </div>
+                <div class="hero-visual">
+                    <div class="floating-card card-1">
+                        <i class="fas fa-calculator"></i>
+                        <span>Mathematics</span>
+                    </div>
+                    <div class="floating-card card-2">
+                        <i class="fas fa-atom"></i>
+                        <span>Science</span>
+                    </div>
+                    <div class="floating-card card-3">
+                        <i class="fas fa-globe"></i>
+                        <span>Social Science</span>
+                    </div>
+                    <div class="floating-card card-4">
+                        <i class="fas fa-book-open"></i>
+                        <span>English</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Doubts Section -->
+        <section id="doubts" class="doubts-section">
+            <div class="section-container">
+                <div class="section-header">
+                    <h2 class="section-title">Solve Your Doubts</h2>
+                    <p class="section-description">Ask any question and get detailed, step-by-step solutions</p>
+                </div>
+                
+                <div class="doubt-input-container">
+                    <div class="subject-selector">
+                        <label for="doubt-subject">Subject:</label>
+                        <select id="doubt-subject" class="subject-select">
+                            <option value="mathematics">Mathematics</option>
+                            <option value="physics">Physics</option>
+                            <option value="chemistry">Chemistry</option>
+                            <option value="biology">Biology</option>
+                            <option value="english">English</option>
+                            <option value="social-science">Social Science</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    
+                    <div class="doubt-input-area">
+                        <textarea 
+                            id="doubt-question" 
+                            placeholder="Type your doubt or question here..."
+                            class="doubt-textarea"
+                        ></textarea>
+                        <button class="btn btn-primary solve-btn" id="solve-doubt-btn">
+                            <i class="fas fa-lightbulb"></i>
+                            Solve Doubt
+                            <span class="btn-loader" style="display: none;">
+                                <i class="fas fa-spinner fa-spin"></i>
+                            </span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="doubt-solution" id="doubt-solution" style="display: none;">
+                    <div class="solution-header">
+                        <h3>Solution</h3>
+                        <div class="solution-actions">
+                            <button class="btn btn-outline" id="copy-solution">
+                                <i class="fas fa-copy"></i>
+                                Copy
+                            </button>
+                            <button class="btn btn-outline" id="save-solution">
+                                <i class="fas fa-bookmark"></i>
+                                Save
+                            </button>
+                        </div>
+                    </div>
+                    <div class="solution-content" id="solution-content"></div>
+                    <div class="xp-earned" id="doubt-xp-earned" style="display: none;">
+                        <i class="fas fa-star"></i>
+                        <span>+50 XP Earned!</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Homework Section -->
+        <section id="homework" class="homework-section">
+            <div class="section-container">
+                <div class="section-header">
+                    <h2 class="section-title">Homework Assistant</h2>
+                    <p class="section-description">Add multiple questions and generate a beautiful PDF with all solutions</p>
+                </div>
+
+                <div class="homework-container">
+                    <div class="homework-input">
+                        <div class="homework-controls">
+                            <select id="homework-subject" class="subject-select">
+                                <option value="mathematics">Mathematics</option>
+                                <option value="physics">Physics</option>
+                                <option value="chemistry">Chemistry</option>
+                                <option value="biology">Biology</option>
+                                <option value="english">English</option>
+                                <option value="social-science">Social Science</option>
+                                <option value="other">Other</option>
+                            </select>
+                            <button class="btn btn-outline" id="add-question-btn">
+                                <i class="fas fa-plus"></i>
+                                Add Question
+                            </button>
+                        </div>
+
+                        <div class="questions-list" id="questions-list">
+                            <!-- Questions will be added dynamically -->
+                        </div>
+
+                        <div class="homework-actions">
+                            <button class="btn btn-primary" id="solve-all-btn" disabled>
+                                <i class="fas fa-brain"></i>
+                                Solve All Questions
+                                <span class="btn-loader" style="display: none;">
+                                    <i class="fas fa-spinner fa-spin"></i>
+                                </span>
+                            </button>
+                            <button class="btn btn-success" id="generate-pdf-btn" disabled>
+                                <i class="fas fa-file-pdf"></i>
+                                Generate PDF
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="homework-solutions" id="homework-solutions">
+                        <!-- Solutions will be displayed here -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Rewards Section -->
+        <section id="rewards" class="rewards-section">
+            <div class="section-container">
+                <div class="section-header">
+                    <h2 class="section-title">Rewards & Progress</h2>
+                    <p class="section-description">Earn XP and unlock amazing study materials</p>
+                </div>
+
+                <div class="progress-overview">
+                    <div class="xp-progress">
+                        <div class="progress-info">
+                            <h3>Your Progress</h3>
+                            <div class="xp-counter">
+                                <span id="progress-current-xp">0</span> / <span id="progress-total-xp">20000</span> XP
+                            </div>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progress-fill"></div>
+                        </div>
+                        <div class="progress-percentage" id="progress-percentage">0%</div>
+                    </div>
+                </div>
+
+                <div class="rewards-grid">
+                    <div class="reward-card" id="sample-papers-reward">
+                        <div class="reward-icon">
+                            <i class="fas fa-file-alt"></i>
+                        </div>
+                        <div class="reward-content">
+                            <h3>30+ Sample Papers</h3>
+                            <p>Complete collection of Class 10 sample papers from Google Drive</p>
+                            <div class="reward-requirement">
+                                <i class="fas fa-star"></i>
+                                20,000 XP Required
+                            </div>
+                        </div>
+                        <div class="reward-status locked" id="papers-status">
+                            <i class="fas fa-lock"></i>
+                            Locked
+                        </div>
+                    </div>
+
+                    <div class="reward-card" id="special-features-reward">
+                        <div class="reward-icon">
+                            <i class="fas fa-crown"></i>
+                        </div>
+                        <div class="reward-content">
+                            <h3>Premium Features</h3>
+                            <p>Advanced AI tutoring and personalized study plans</p>
+                            <div class="reward-requirement">
+                                <i class="fas fa-star"></i>
+                                100,000 XP Required
+                            </div>
+                        </div>
+                        <div class="reward-status locked" id="premium-status">
+                            <i class="fas fa-lock"></i>
+                            Locked
+                        </div>
+                    </div>
+                </div>
+
+                <div class="achievements">
+                    <h3>Achievements</h3>
+                    <div class="achievements-grid" id="achievements-grid">
+                        <!-- Achievements will be added dynamically -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Profile Section -->
+        <section id="profile" class="profile-section">
+            <div class="section-container">
+                <div class="section-header">
+                    <h2 class="section-title">Your Profile</h2>
+                    <p class="section-description">Track your learning journey and statistics</p>
+                </div>
+
+                <div class="profile-content">
+                    <div class="profile-card">
+                        <div class="profile-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="profile-info">
+                            <h3 id="user-name">Student</h3>
+                            <p id="user-level">Beginner Learner</p>
+                            <div class="profile-stats">
+                                <div class="profile-stat">
+                                    <span class="stat-value" id="profile-doubts">0</span>
+                                    <span class="stat-label">Doubts Solved</span>
+                                </div>
+                                <div class="profile-stat">
+                                    <span class="stat-value" id="profile-homework">0</span>
+                                    <span class="stat-label">Homework Done</span>
+                                </div>
+                                <div class="profile-stat">
+                                    <span class="stat-value" id="profile-streak">0</span>
+                                    <span class="stat-label">Day Streak</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="activity-history">
+                        <h3>Recent Activity</h3>
+                        <div class="activity-list" id="activity-list">
+                            <div class="activity-item">
+                                <i class="fas fa-info-circle"></i>
+                                <span>Welcome to K-lana AI! Start solving doubts to earn XP.</span>
+                                <span class="activity-time">Now</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Notification System -->
+    <div class="notification-container" id="notification-container"></div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loading-overlay" style="display: none;">
+        <div class="loading-spinner">
+            <i class="fas fa-brain fa-spin"></i>
+            <p>AI is thinking...</p>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="script.js"></script>
+</body>
+</html>
